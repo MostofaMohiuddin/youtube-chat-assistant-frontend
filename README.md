@@ -52,6 +52,7 @@ This extension is built using:
 
 ### Project Structure
 
+```
 ├── public/ # Static files (manifest.json, icons)
 ├── src/ # Source code
 │ ├── background.js # Background script
@@ -67,6 +68,7 @@ This extension is built using:
 ├── .env.example # Example environment variables file
 ├── .gitignore # Files to ignore in git
 └── README.md # Documentation for the project
+```
 
 ### Building and Testing
 
