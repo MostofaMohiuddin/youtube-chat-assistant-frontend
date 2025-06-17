@@ -19,32 +19,39 @@ function waitForYouTubePlayer() {
 function createChatButton() {
   const button = document.createElement("button");
   button.id = "youtube-chat-btn";
-  button.innerHTML = "💬 Chat";
+  button.innerHTML =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H6l-2,2V4h16V16z"/></svg> Ask Video Assistant';
   button.style.cssText = `
       position: fixed;
       top: 20px;
       right: 20px;
       z-index: 10000;
-      background: #ff0000;
+      background: rgba(255, 0, 0, 0.9);
       color: white;
       border: none;
-      padding: 12px 16px;
-      border-radius: 20px;
+      padding: 10px 16px;
+      border-radius: 24px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: bold;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(4px);
     `;
 
   button.addEventListener("mouseenter", () => {
-    button.style.background = "#cc0000";
-    button.style.transform = "scale(1.05)";
+    button.style.background = "rgba(220, 0, 0, 0.95)";
+    button.style.transform = "translateY(-2px)";
+    button.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
   });
 
   button.addEventListener("mouseleave", () => {
-    button.style.background = "#ff0000";
-    button.style.transform = "scale(1)";
+    button.style.background = "rgba(255, 0, 0, 0.9)";
+    button.style.transform = "translateY(0)";
+    button.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
   });
 
   return button;
@@ -58,40 +65,77 @@ function createChatbox() {
       position: fixed;
       top: 80px;
       right: 20px;
-      width: 350px;
-      height: 500px;
+      width: 380px;
+      height: 540px;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       z-index: 10001;
       display: none;
       flex-direction: column;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+      transition: all 0.3s ease;
     `;
+
+  // Add CSS for animations
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    .message {
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .bot-message-bubble {
+      background: #f0f2f5;
+      color: #333;
+      border-radius: 18px 18px 18px 4px;
+    }
+    .user-message-bubble {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: white;
+      border-radius: 18px 18px 4px 18px;
+    }
+  `;
+  document.head.appendChild(style);
 
   chatbox.innerHTML = `
       <div style="
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 20px;
+        padding: 16px 20px;
         border-bottom: 1px solid #eee;
-        background: #f8f9fa;
-        border-radius: 10px 10px 0 0;
+        background: #ffffff;
+        border-radius: 16px 16px 0 0;
       ">
-        <h3 style="margin: 0; color: #333; font-size: 16px;">Chat Assistant</h3>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff0000">
+            <path d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z"/>
+          </svg>
+          <h3 style="margin: 0; color: #333; font-size: 16px; font-weight: 600;">Video Assistant</h3>
+        </div>
         <button id="close-chat" style="
-          background: none;
+          background: #f5f5f5;
           border: none;
-          font-size: 18px;
+          font-size: 16px;
           cursor: pointer;
           color: #666;
           padding: 0;
-          width: 24px;
-          height: 24px;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: all 0.2s ease;
         ">×</button>
       </div>
       
@@ -101,44 +145,57 @@ function createChatbox() {
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 16px;
+        background-color: #fafafa;
+        scroll-behavior: smooth;
       ">
         <div class="message bot-message">
-          <div style="background: #f0f2f5; padding: 10px 15px; border-radius: 18px; max-width: 80%;">
-            Hello! I'm here to help you with this YouTube video. What would you like to know?
+          <div class="bot-message-bubble" style="padding: 12px 16px; max-width: 80%; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+            <p style="margin: 0;">Hello! I'm here to help you with this YouTube video. What would you like to know?</p>
           </div>
         </div>
       </div>
       
       <div style="
-        padding: 15px 20px;
+        padding: 16px 20px;
         border-top: 1px solid #eee;
         display: flex;
-        gap: 10px;
+        gap: 12px;
+        background-color: white;
+        align-items: center;
       ">
         <input
           type="text"
           id="chat-input"
-          placeholder="Type your message..."
+          placeholder="Type your question about this video..."
           style="
             flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
             outline: none;
             font-size: 14px;
+            transition: all 0.2s ease;
+            background-color: #f9f9f9;
           "
         />
         <button id="send-message" style="
           background: #ff0000;
           color: white;
           border: none;
-          padding: 10px 20px;
-          border-radius: 20px;
+          padding: 12px;
+          border-radius: 50%;
           cursor: pointer;
-          font-size: 14px;
-          font-weight: bold;
-        ">Send</button>
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px rgba(255,0,0,0.3);
+          transition: all 0.2s ease;
+        ">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+          </svg>
+        </button>
       </div>
     `;
 
@@ -152,25 +209,23 @@ function addMessage(content, isBot = false) {
   messageDiv.className = `message ${isBot ? "bot-message" : "user-message"}`;
 
   const alignment = isBot ? "flex-start" : "flex-end";
-  const bgColor = isBot ? "#f0f2f5" : "#ff0000";
-  const textColor = isBot ? "#333" : "white";
+  const bubbleClass = isBot ? "bot-message-bubble" : "user-message-bubble";
 
   messageDiv.style.cssText = `
       display: flex;
       justify-content: ${alignment};
-      margin-bottom: 10px;
+      margin-bottom: 4px;
     `;
 
   messageDiv.innerHTML = `
-      <div style="
-        background: ${bgColor};
-        color: ${textColor};
-        padding: 10px 15px;
-        border-radius: 18px;
+      <div class="${bubbleClass}" style="
+        padding: 12px 16px;
         max-width: 80%;
         word-wrap: break-word;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        line-height: 1.4;
       ">
-        ${content}
+        <p style="margin: 0;">${content}</p>
       </div>
     `;
 
@@ -259,14 +314,16 @@ async function initExtension() {
     loadingDiv.style.cssText =
       "display: flex; justify-content: flex-start; margin-bottom: 10px;";
     loadingDiv.innerHTML = `
-        <div style="
-          background: #f0f2f5;
-          color: #333;
-          padding: 10px 15px;
-          border-radius: 18px;
+        <div class="bot-message-bubble" style="
+          padding: 12px 16px;
           max-width: 80%;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         ">
-          <span style="animation: pulse 1.5s infinite;">Thinking...</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #ff0000; animation: pulse 1s infinite alternate;"></div>
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #ff0000; animation: pulse 1s infinite alternate 0.2s;"></div>
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #ff0000; animation: pulse 1s infinite alternate 0.4s;"></div>
+          </div>
         </div>
       `;
     document.getElementById("chat-messages").appendChild(loadingDiv);
