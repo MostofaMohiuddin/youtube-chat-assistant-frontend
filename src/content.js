@@ -23,8 +23,8 @@ function createChatButton() {
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H6l-2,2V4h16V16z"/></svg> Ask Video Assistant';
   button.style.cssText = `
       position: fixed;
-      top: 20px;
-      right: 20px;
+      bottom: 20px;
+      left: 20px;
       z-index: 10000;
       background: rgba(255, 0, 0, 0.9);
       color: white;
