@@ -76,6 +76,7 @@ function createChatbox() {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       overflow: hidden;
       transition: all 0.3s ease;
+      cursor: default;
     `;
 
   // Add CSS for animations
@@ -103,11 +104,15 @@ function createChatbox() {
       color: white;
       border-radius: 18px 18px 4px 18px;
     }
+    #youtube-chatbox-header {
+      cursor: move; /* Show move cursor on header */
+      user-select: none; /* Prevent text selection during drag */
+    }
   `;
   document.head.appendChild(style);
 
   chatbox.innerHTML = `
-      <div style="
+      <div id="youtube-chatbox-header" style="
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -285,6 +290,9 @@ async function initExtension() {
   const chatbox = createChatbox();
   document.body.appendChild(chatbox);
 
+  // Make chatbox draggable
+  makeChatboxDraggable(chatbox);
+
   // Button click handler
   chatButton.addEventListener("click", () => {
     const isVisible = chatbox.style.display === "flex";
@@ -349,6 +357,64 @@ async function initExtension() {
       sendMessage();
     }
   });
+}
+
+// Add this new function for draggable functionality
+function makeChatboxDraggable(chatbox) {
+  const header = document.getElementById("youtube-chatbox-header");
+  let isDragging = false;
+  let initialX, initialY, currentX, currentY;
+  let offsetX = 0,
+    offsetY = 0;
+
+  header.addEventListener("mousedown", startDrag);
+
+  function startDrag(e) {
+    e.preventDefault();
+
+    // Get initial position of cursor
+    initialX = e.clientX;
+    initialY = e.clientY;
+
+    // Get current position of chatbox
+    const rect = chatbox.getBoundingClientRect();
+    offsetX = initialX - rect.left;
+    offsetY = initialY - rect.top;
+
+    isDragging = true;
+
+    // Add event listeners for dragging
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", stopDrag);
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+
+    e.preventDefault();
+
+    // Calculate new position
+    currentX = e.clientX - offsetX;
+    currentY = e.clientY - offsetY;
+
+    // Apply boundary constraints
+    const maxX = window.innerWidth - chatbox.offsetWidth;
+    const maxY = window.innerHeight - chatbox.offsetHeight;
+
+    currentX = Math.min(Math.max(0, currentX), maxX);
+    currentY = Math.min(Math.max(0, currentY), maxY);
+
+    // Update position
+    chatbox.style.left = currentX + "px";
+    chatbox.style.top = currentY + "px";
+    chatbox.style.right = "auto";
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    document.removeEventListener("mousemove", drag);
+    document.removeEventListener("mouseup", stopDrag);
+  }
 }
 
 // Handle YouTube's dynamic navigation
