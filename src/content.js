@@ -267,6 +267,7 @@ async function sendMessageToBackend() {
         context: {
           videoTitle: videoTitle,
           videoUrl: videoUrl,
+          videoId: new URL(videoUrl).searchParams.get("v"),
           channelName: channelName,
           timestamp: Date.now(),
         },
