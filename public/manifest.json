@@ -20,5 +20,10 @@
       "resources": ["chatbox.html"],
       "matches": ["https://www.youtube.com/*"]
     }
-  ]
+  ],
+  "icons": {
+    "16": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
+  }
 }
