@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Chat Assistant",
+  "version": "0.0.1",
+  "description": "Add a chat interface to YouTube videos",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://your-backend-server.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/watch*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["chatbox.html"],
+      "matches": ["https://www.youtube.com/*"]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+public/web_model/
+
+build/
+
+# Dependency directories
+node_modules/
+
+.env
+*.zip

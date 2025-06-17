@@ -1,0 +1,61 @@
+/* Animation for loading message */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Scrollbar styling for chat messages */
+#chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Hover effects */
+#send-message:hover {
+  background: #cc0000 !important;
+}
+
+#chat-input:focus {
+  border-color: #ff0000 !important;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1) !important;
+}
+
+#close-chat:hover {
+  background: #f0f0f0 !important;
+  border-radius: 50% !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #youtube-chatbox {
+    width: calc(100vw - 40px) !important;
+    right: 20px !important;
+    left: 20px !important;
+    height: 400px !important;
+  }
+
+  #youtube-chat-btn {
+    right: 15px !important;
+    top: 15px !important;
+    padding: 10px 14px !important;
+    font-size: 12px !important;
+  }
+}
