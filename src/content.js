@@ -1,3 +1,5 @@
+const CHAT_MESSAGES = [];
+const API_URL = "https://youtube-qna.com/api";
 // Wait for YouTube page to load
 function waitForYouTubePlayer() {
   return new Promise((resolve) => {
@@ -236,10 +238,14 @@ function addMessage(content, isBot = false) {
 
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  CHAT_MESSAGES.push({
+    content: content,
+    role: isBot ? "assistant" : "user",
+  });
 }
 
 // Send message to backend
-async function sendMessageToBackend(message) {
+async function sendMessageToBackend() {
   try {
     // Get current video information
     const videoTitle =
@@ -250,13 +256,14 @@ async function sendMessageToBackend(message) {
     const channelName =
       document.querySelector("ytd-channel-name a")?.textContent?.trim() || "";
 
-    const response = await fetch("https://your-backend-server.com/api/chat", {
+    const response = await fetch(`${API_URL}/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify({
-        message: message,
+        messages: CHAT_MESSAGES,
         context: {
           videoTitle: videoTitle,
           videoUrl: videoUrl,
@@ -271,7 +278,7 @@ async function sendMessageToBackend(message) {
     }
 
     const data = await response.json();
-    return data.response || "Sorry, I could not process your request.";
+    return data.message || "Sorry, I could not process your request.";
   } catch (error) {
     console.error("Error sending message:", error);
     return "Sorry, there was an error connecting to the server. Please try again.";
@@ -339,7 +346,7 @@ async function initExtension() {
       document.getElementById("chat-messages").scrollHeight;
 
     // Send to backend
-    const response = await sendMessageToBackend(message);
+    const response = await sendMessageToBackend();
 
     // Remove loading message
     const loading = document.getElementById("loading-message");
