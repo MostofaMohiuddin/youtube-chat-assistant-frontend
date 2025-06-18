@@ -247,6 +247,11 @@ function addMessage(content, isBot = false) {
 // Send message to backend
 async function sendMessageToBackend() {
   try {
+    const llmApiKey = await new Promise((resolve) => {
+      chrome.storage.local.get(["llmApiKey"], function (result) {
+        resolve(result.llmApiKey || "");
+      });
+    });
     // Get current video information
     const videoTitle =
       document
@@ -264,6 +269,7 @@ async function sendMessageToBackend() {
       },
       body: JSON.stringify({
         messages: CHAT_MESSAGES,
+        api_key: llmApiKey,
         context: {
           videoTitle: videoTitle,
           videoUrl: videoUrl,
@@ -316,6 +322,15 @@ async function initExtension() {
   const sendMessage = async () => {
     const input = document.getElementById("chat-input");
     const message = input.value.trim();
+    const llmApiKey = await new Promise((resolve) => {
+      chrome.storage.local.get(["llmApiKey"], function (result) {
+        resolve(result.llmApiKey || "");
+      });
+    });
+    if (!llmApiKey) {
+      alert("Please set your API key in the extension settings.");
+      return;
+    }
 
     if (!message) return;
 
