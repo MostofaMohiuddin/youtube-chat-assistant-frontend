@@ -445,14 +445,15 @@ let currentUrl = location.href;
 const observer = new MutationObserver(() => {
   if (location.href !== currentUrl) {
     currentUrl = location.href;
-    if (location.href.includes("/watch")) {
-      // Remove existing elements
-      const existingButton = document.getElementById("youtube-chat-btn");
-      const existingChatbox = document.getElementById("youtube-chatbox");
-      if (existingButton) existingButton.remove();
-      if (existingChatbox) existingChatbox.remove();
 
-      // Reinitialize
+    // Remove existing elements on any navigation
+    const existingButton = document.getElementById("youtube-chat-btn");
+    const existingChatbox = document.getElementById("youtube-chatbox");
+    if (existingButton) existingButton.remove();
+    if (existingChatbox) existingChatbox.remove();
+
+    // Only re-initialize if on a /watch page
+    if (location.href.includes("/watch")) {
       setTimeout(initExtension, 1000);
     }
   }
