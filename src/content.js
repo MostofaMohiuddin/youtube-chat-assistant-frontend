@@ -21,39 +21,75 @@ function waitForYouTubePlayer() {
 function createChatButton() {
   const button = document.createElement("button");
   button.id = "youtube-chat-btn";
-  button.innerHTML =
-    '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H6l-2,2V4h16V16z"/></svg> Ask Video Assistant';
+
+  // Modern chat bubble icon with typing dots
+  button.innerHTML = `
+    <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22Z" 
+          stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="8" cy="12" r="1.5" fill="white"/>
+        <circle cx="12" cy="12" r="1.5" fill="white"/>
+        <circle cx="16" cy="12" r="1.5" fill="white"/>
+      </svg>
+    </div>
+    <span style="margin-left: 8px;">Ask Video Assistant</span>
+  `;
+
   button.style.cssText = `
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 10000;
-      background: rgba(255, 0, 0, 0.9);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 24px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(4px);
-    `;
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 10000;
+    background: linear-gradient(135deg, #FF3636 0%, #C90000 100%);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(255,0,0,0.2), 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.2px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  `;
+
+  // Create a compact version for smaller screens
+  const mediaQuery = window.matchMedia("(max-width: 768px)");
+  const updateButtonSize = (isMobile) => {
+    if (isMobile) {
+      button.style.padding = "14px";
+      button.style.borderRadius = "50%";
+      button.querySelector("span").style.display = "none";
+    } else {
+      button.style.padding = "12px 18px";
+      button.style.borderRadius = "28px";
+      button.querySelector("span").style.display = "inline";
+    }
+  };
+
+  updateButtonSize(mediaQuery.matches);
+  mediaQuery.addEventListener("change", (e) => updateButtonSize(e.matches));
 
   button.addEventListener("mouseenter", () => {
-    button.style.background = "rgba(220, 0, 0, 0.95)";
-    button.style.transform = "translateY(-2px)";
-    button.style.boxShadow = "0 6px 16px rgba(0,0,0,0.3)";
+    button.style.background =
+      "linear-gradient(135deg, #E62E2E 0%, #B00000 100%)";
+    button.style.transform = "translateY(-4px) scale(1.03)";
+    button.style.boxShadow =
+      "0 8px 24px rgba(255,0,0,0.25), 0 4px 12px rgba(0,0,0,0.2)";
   });
 
   button.addEventListener("mouseleave", () => {
-    button.style.background = "rgba(255, 0, 0, 0.9)";
-    button.style.transform = "translateY(0)";
-    button.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+    button.style.background =
+      "linear-gradient(135deg, #FF3636 0%, #C90000 100%)";
+    button.style.transform = "translateY(0) scale(1)";
+    button.style.boxShadow =
+      "0 4px 20px rgba(255,0,0,0.2), 0 2px 8px rgba(0,0,0,0.15)";
   });
 
   return button;
