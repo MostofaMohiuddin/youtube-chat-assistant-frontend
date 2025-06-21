@@ -136,15 +136,41 @@ function createChatbox() {
       background: #f0f2f5;
       color: #333;
       border-radius: 18px 18px 18px 4px;
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     .user-message-bubble {
       background: linear-gradient(135deg, #ff0000, #cc0000);
       color: white;
       border-radius: 18px 18px 4px 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     #youtube-chatbox-header {
       cursor: move; /* Show move cursor on header */
       user-select: none; /* Prevent text selection during drag */
+    }
+    #chat-messages p {
+      margin: 0;
+      padding: 0;
+    }
+    code {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      background-color: rgba(0, 0, 0, 0.05);
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+    ul, ol {
+      padding-left: 1.5em;
+      margin: 0.5em 0;
+    }
+    li {
+      margin-bottom: 0.3em;
     }
   `;
   document.head.appendChild(style);
