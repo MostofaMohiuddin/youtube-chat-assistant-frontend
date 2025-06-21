@@ -3,7 +3,7 @@
   "name": "YouTube Chat Assistant",
   "version": "0.0.1",
   "description": "Add a chat interface to YouTube videos",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/watch*"],

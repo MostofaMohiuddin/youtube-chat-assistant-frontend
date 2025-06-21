@@ -1,5 +1,5 @@
 const CHAT_MESSAGES = [];
-const API_URL = "https://youtube-qna.com/api";
+const API_URL = "https://yt-assistant.mostofa.site/api";
 // Wait for YouTube page to load
 function waitForYouTubePlayer() {
   return new Promise((resolve) => {
