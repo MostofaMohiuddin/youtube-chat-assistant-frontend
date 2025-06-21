@@ -283,8 +283,40 @@ function addMessage(content, isBot = false) {
   messageDiv.style.cssText = `
       display: flex;
       justify-content: ${alignment};
-      margin-bottom: 4px;
+      margin-bottom: 10px;
     `;
+
+  // Format content with basic markdown-like syntax
+  if (isBot) {
+    // Format bullet points
+    content = content.replace(/- (.+?)(\n|$)/g, "<li>$1</li>");
+
+    // Wrap bullet points in unordered list
+    if (content.includes("<li>")) {
+      content = content.replace(/<li>(.+?)<\/li>/g, "<ul><li>$1</li></ul>");
+      content = content.replace(/<\/ul>\s*<ul>/g, "");
+    }
+
+    // Format numbered lists
+    content = content.replace(/(\d+)\. (.+?)(\n|$)/g, "<li>$2</li>");
+
+    // Wrap numbered lists in ordered list
+    if (content.includes("<li>") && !content.includes("<ul>")) {
+      content = content.replace(/<li>(.+?)<\/li>/g, "<ol><li>$1</li></ol>");
+      content = content.replace(/<\/ol>\s*<ol>/g, "");
+    }
+
+    // Add paragraph breaks for empty lines
+    content = content.replace(/\n\s*\n/g, "</p><p>");
+
+    // Format code blocks with monospace font
+    content = content.replace(/`(.+?)`/g, "<code>$1</code>");
+
+    // Ensure content is wrapped in paragraphs
+    if (!content.startsWith("<")) {
+      content = `<p>${content}</p>`;
+    }
+  }
 
   messageDiv.innerHTML = `
       <div class="${bubbleClass}" style="
@@ -292,9 +324,8 @@ function addMessage(content, isBot = false) {
         max-width: 80%;
         word-wrap: break-word;
         box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        line-height: 1.4;
       ">
-        <p style="margin: 0;">${content}</p>
+        ${isBot ? content : `<p>${content}</p>`}
       </div>
     `;
 
