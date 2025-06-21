@@ -288,6 +288,10 @@ function addMessage(content, isBot = false) {
 
   // Format content with basic markdown-like syntax
   if (isBot) {
+    // Format bold text (both ** and __ syntax)
+    content = content.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    content = content.replace(/__(.+?)__/g, "<strong>$1</strong>");
+
     // Format bullet points
     content = content.replace(/- (.+?)(\n|$)/g, "<li>$1</li>");
 
