@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "YouTube Chat Assistant",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Add a chat interface to YouTube videos",
   "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],
@@ -33,5 +36,6 @@
     "16": "icons/icon.png",
     "48": "icons/icon.png",
     "128": "icons/icon.png"
-  }
+  },
+  "key": "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyT/jGDSrDpq+XamxsRdp412GiXsik4hC1GubVoReRMNy+gDWZL/oli/fhjc9+70dIXtJDUrN3HcXqSwyENpR1WSkuLAtAM0PO9oRGaozKQ/CQjqC4Q0icWEGJzdwdl9IVXMiXNxiCh+SJwiwnyl67kdQ/WKbT36tN5pX08FselwOR5nP+DpNI0JFXlrbiKUb4cUaGyLxYDDXEqjk8mPf5E2My66QMr2xjz+shGwYXjH96wC5viqhZovYWzvgr1DOF7oPA1jRGH3Ug/kXq7QeRokMOYacBvCbH9kHJXgvzAxUZRXHDwE64gl2dGwXd8WoT4TH1qpNeoBBr0sRfOpdgQIDAQAB-----END PUBLIC KEY-----"
 }
